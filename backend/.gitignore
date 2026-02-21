@@ -1,0 +1,33 @@
+/vendor/
+/node_modules/
+/public/hot
+/public/storage
+/storage/*.key
+/bootstrap/cache/*.php
+
+# Environment
+.env
+.env.backup
+.env.production
+.env.testing
+
+# Logs & DB
+*.log
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+database/database.sqlite
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# PHPUnit
+/coverage-html/
+phpunit.result.cache
