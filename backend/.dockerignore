@@ -3,6 +3,7 @@
 .env.*
 !.env.example
 .env.render
+.env.do
 vendor/
 node_modules/
 storage/logs/*

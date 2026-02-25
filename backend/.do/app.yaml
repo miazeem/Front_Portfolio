@@ -1,0 +1,57 @@
+spec:
+  name: portfolio-backend
+  region: nyc   # Change to: ams (Amsterdam), sgp (Singapore), lon (London), syd (Sydney), blr (Bangalore)
+
+  # ── Managed PostgreSQL Database ──────────────────────────────
+  databases:
+    - name: portfolio-db
+      engine: PG
+      version: "16"
+      size: db-s-dev-database   # Free dev database (for production use db-s-1vcpu-1gb)
+      num_nodes: 1
+
+  # ── Laravel API (Docker) ──────────────────────────────────────
+  services:
+    - name: portfolio-api
+      source_dir: /backend       # Root directory of backend inside the repo
+      github:
+        repo: your-github-username/your-repo-name   # ← REPLACE with your repo
+        branch: main
+        deploy_on_push: true
+      dockerfile_path: backend/Dockerfile
+
+      http_port: 8080            # DO App Platform default — matches ${PORT} at runtime
+      instance_size_slug: apps-s-1vcpu-0.5gb   # Basic plan (~$5/mo); use apps-s-1vcpu-1gb for more RAM
+
+      envs:
+        - key: APP_NAME
+          value: Portfolio
+        - key: APP_ENV
+          value: production
+        - key: APP_DEBUG
+          value: "false"
+        - key: APP_KEY
+          value: ""              # ← Fill in: php artisan key:generate --show
+          type: SECRET
+        - key: APP_URL
+          value: ""              # ← Fill in after first deploy (your DO app URL)
+        - key: FRONTEND_URL
+          value: ""              # ← Fill in your Vercel URL
+        - key: DB_CONNECTION
+          value: pgsql
+        - key: DATABASE_URL
+          value: ${portfolio-db.DATABASE_URL}   # Auto-injected from the linked DB above
+        - key: CACHE_STORE
+          value: database
+        - key: SESSION_DRIVER
+          value: database
+        - key: QUEUE_CONNECTION
+          value: database
+        - key: LOG_CHANNEL
+          value: stderr
+        - key: LOG_LEVEL
+          value: error
+        - key: SANCTUM_STATEFUL_DOMAINS
+          value: ""              # ← Fill in your Vercel domain (no https://)
+        - key: COMPOSER_MEMORY_LIMIT
+          value: "-1"
