@@ -20,7 +20,10 @@ return [
         env('FRONTEND_URL', 'http://localhost:5173'),
     ],
 
-    'allowed_origins_patterns' => [],
+    // Matches any *.vercel.app preview URL automatically
+    'allowed_origins_patterns' => [
+        '#^https://[\w-]+\.vercel\.app$#',
+    ],
 
     'allowed_headers' => ['*'],
 
