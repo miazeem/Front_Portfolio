@@ -17,7 +17,7 @@ return [
     'allowed_origins' => [
         'http://localhost:5173',
         'http://localhost:3000',
-        env('FRONTEND_URL', 'http://localhost:5173'),
+        rtrim(env('FRONTEND_URL', 'http://localhost:5173'), '/'),
     ],
 
     // Matches any *.vercel.app preview URL automatically

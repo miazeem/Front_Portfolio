@@ -3,10 +3,9 @@ node_modules/
 dist/
 .cache/
 
-# Env
+# Env (local secrets only — .env.production is committed intentionally)
 .env
 .env.local
-.env.production
 
 # Vite
 *.local
