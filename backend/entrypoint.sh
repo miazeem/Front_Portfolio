@@ -15,8 +15,9 @@ php artisan package:discover --ansi
 php artisan config:cache
 php artisan route:cache
 
-# Run migrations
+# Run migrations and seed (firstOrCreate guards prevent duplicate data)
 php artisan migrate --force
+php artisan db:seed --force
 
 # Start Apache
 exec apache2-foreground
