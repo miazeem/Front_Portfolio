@@ -137,7 +137,7 @@ In the **Environment Variables** section before deploying:
 
 | Key | Value |
 |-----|-------|
-| `VITE_API_URL` | `https://portfolio-backend.onrender.com/api` |
+| `VITE_API_URL` | `https://portfolio-backend-0r3i.onrender.com/api` |
 
 Then click **Deploy**.
 
