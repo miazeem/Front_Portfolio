@@ -42,7 +42,9 @@ RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cac
     && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
 # Apache virtual host — point to Laravel's public/ folder
-RUN echo '<VirtualHost *:80>\n\
+# Uses REPLACE_PORT as a plain placeholder; entrypoint.sh substitutes the real PORT at runtime
+RUN echo 'Listen REPLACE_PORT' > /etc/apache2/ports.conf \
+    && echo '<VirtualHost *:REPLACE_PORT>\n\
     DocumentRoot /var/www/html/public\n\
     <Directory /var/www/html/public>\n\
         AllowOverride All\n\
@@ -53,15 +55,10 @@ RUN echo '<VirtualHost *:80>\n\
     CustomLog ${APACHE_LOG_DIR}/access.log combined\n\
 </VirtualHost>' > /etc/apache2/sites-available/000-default.conf
 
-# Render sets PORT dynamically — configure Apache to listen on it
-RUN echo 'Listen ${PORT}' > /etc/apache2/ports.conf \
-    && sed -i 's/*:80/${PORT}/g' /etc/apache2/sites-available/000-default.conf
+# Copy and prepare the entrypoint script
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
-EXPOSE 10000
+EXPOSE 8080
 
-# Entrypoint: package:discover runs here (deferred from build time — needs APP_KEY)
-CMD php artisan package:discover --ansi && \
-    php artisan config:cache && \
-    php artisan route:cache && \
-    php artisan migrate --force && \
-    apache2-foreground
+ENTRYPOINT ["/entrypoint.sh"]
