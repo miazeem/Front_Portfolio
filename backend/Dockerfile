@@ -10,31 +10,27 @@ RUN apt-get update && apt-get install -y \
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
+# Disable Composer memory limit — prevents exit code 2 during dependency resolution
+ENV COMPOSER_MEMORY_LIMIT=-1
+
 # Enable Apache mod_rewrite
 RUN a2enmod rewrite headers
 
 # Set working directory
 WORKDIR /var/www/html
 
-# ── Layer-cache optimisation: install dependencies before copying full app ──
-# This layer only re-runs when composer.json or composer.lock changes.
-COPY composer.json composer.lock ./
+# Copy all application files
+COPY . .
 
 # --no-scripts: skips post-autoload-dump (php artisan package:discover)
 # which fails at build time because there is no .env / APP_KEY yet.
-# package:discover is handled at container startup via php artisan optimize.
+# package:discover runs at container startup in CMD instead.
 RUN composer install \
     --optimize-autoloader \
     --no-dev \
     --no-interaction \
     --no-scripts \
     --prefer-dist
-
-# Copy the rest of the application
-COPY . .
-
-# Re-dump autoload now that full app code is present (still no scripts)
-RUN composer dump-autoload --optimize --no-scripts
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
