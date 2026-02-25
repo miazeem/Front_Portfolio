@@ -16,11 +16,25 @@ RUN a2enmod rewrite headers
 # Set working directory
 WORKDIR /var/www/html
 
-# Copy application files
+# ── Layer-cache optimisation: install dependencies before copying full app ──
+# This layer only re-runs when composer.json or composer.lock changes.
+COPY composer.json composer.lock ./
+
+# --no-scripts: skips post-autoload-dump (php artisan package:discover)
+# which fails at build time because there is no .env / APP_KEY yet.
+# package:discover is handled at container startup via php artisan optimize.
+RUN composer install \
+    --optimize-autoloader \
+    --no-dev \
+    --no-interaction \
+    --no-scripts \
+    --prefer-dist
+
+# Copy the rest of the application
 COPY . .
 
-# Install PHP dependencies (production only)
-RUN composer install --optimize-autoloader --no-dev --no-interaction
+# Re-dump autoload now that full app code is present (still no scripts)
+RUN composer dump-autoload --optimize --no-scripts
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
@@ -44,8 +58,9 @@ RUN echo 'Listen ${PORT}' > /etc/apache2/ports.conf \
 
 EXPOSE 10000
 
-# Entrypoint: run migrations then start Apache
-CMD php artisan config:cache && \
+# Entrypoint: package:discover runs here (deferred from build time — needs APP_KEY)
+CMD php artisan package:discover --ansi && \
+    php artisan config:cache && \
     php artisan route:cache && \
     php artisan migrate --force && \
     apache2-foreground
