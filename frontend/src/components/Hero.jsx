@@ -195,6 +195,7 @@ export default function Hero() {
                                     src={settings.profile_image_url || '/profile.jpg'}
                                     alt="Azeem Ahamed"
                                     className="w-full h-full object-cover object-top"
+                                    onError={e => { e.currentTarget.onerror = null; e.currentTarget.src = '/profile.jpg'; }}
                                 />
                                 {/* Subtle bottom gradient overlay */}
                                 <div className="absolute inset-0 bg-gradient-to-t from-navy-900/60 via-transparent to-transparent" />
