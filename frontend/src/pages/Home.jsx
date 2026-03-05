@@ -21,7 +21,7 @@ export default function Home() {
             <footer className="py-8 px-6 md:px-10 bg-navy-950 border-t border-white/[0.05]">
                 <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
                     <span className="text-slate-500 text-sm">
-                         {new Date().getFullYear()} DevFolio  Engineered with Precision
+                         {new Date().getFullYear()} Azeem Tech - Engineered with Precision
                     </span>
                     <div className="flex items-center gap-6 text-sm text-slate-500">
                         <a href="#about" className="hover:text-white transition-colors">About</a>

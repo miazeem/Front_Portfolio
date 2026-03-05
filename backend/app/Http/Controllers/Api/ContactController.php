@@ -39,4 +39,11 @@ class ContactController extends Controller
 
         return response()->json($contactMessage);
     }
+
+    public function destroy(ContactMessage $contactMessage)
+    {
+        $contactMessage->delete();
+
+        return response()->json(['message' => 'Deleted']);
+    }
 }

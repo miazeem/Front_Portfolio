@@ -15,10 +15,12 @@ class Testimonial extends Model
         'company',
         'message',
         'avatar_url',
+        'rating',
         'order',
     ];
 
     protected $casts = [
-        'order' => 'integer',
+        'rating' => 'integer',
+        'order'  => 'integer',
     ];
 }

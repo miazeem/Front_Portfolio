@@ -12,7 +12,7 @@ function TestimonialCard({ testimonial, index }) {
         >
             <div className="flex items-center justify-between">
                 <div className="flex gap-1">
-                    {[...Array(5)].map((_, i) => (
+                    {[...Array(testimonial.rating ?? 5)].map((_, i) => (
                         <Star key={i} className="w-4 h-4 text-yellow-400 fill-yellow-400" />
                     ))}
                 </div>

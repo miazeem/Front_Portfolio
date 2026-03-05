@@ -28,24 +28,37 @@ export default function Admin() {
     };
 
     return (
-        <div className="min-h-screen bg-navy-900 flex items-center justify-center p-6 relative overflow-hidden">
-            {/* Background Ornaments */}
-            <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '4s' }} />
-            <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '6s' }} />
+        <div className="min-h-screen flex items-center justify-center p-6 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #020817 0%, #070d2a 45%, #040916 100%)' }}>
+            {/* Top accent line */}
+            <div className="absolute top-0 left-0 right-0 h-px z-20" style={{ background: 'linear-gradient(90deg, transparent 0%, #06b6d4 30%, #3b82f6 50%, #8b5cf6 70%, transparent 100%)' }} />
 
+            {/* Dot grid */}
+            <div className="absolute inset-0 bg-dot-grid opacity-60" />
+
+            {/* Radial mesh */}
+            <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse 80% 60% at 60% 20%, rgba(59,130,246,0.12) 0%, transparent 70%), radial-gradient(ellipse 60% 50% at 10% 80%, rgba(6,182,212,0.10) 0%, transparent 70%)' }} />
+
+            {/* Glow orbs */}
+            <div className="absolute top-1/4 right-1/4 w-[600px] h-[600px] rounded-full bg-blue-600/25 blur-[140px] animate-pulse-slow" />
+            <div className="absolute bottom-1/4 left-1/6 w-[500px] h-[500px] rounded-full bg-cyan-500/20 blur-[120px] animate-pulse-slow" style={{ animationDelay: '2s' }} />
+            <div className="absolute top-1/2 right-1/6 w-[350px] h-[350px] rounded-full bg-violet-600/15 blur-[100px] animate-pulse-slow" style={{ animationDelay: '4s' }} />
+            <div className="absolute -top-20 left-1/3 w-[400px] h-[300px] rounded-full bg-indigo-500/10 blur-[100px] animate-pulse-slow" style={{ animationDelay: '1s' }} />
+
+            {/* Card with gradient border */}
+            <div className="relative z-10 w-full max-w-md rounded-3xl p-px" style={{ background: 'linear-gradient(135deg, rgba(6,182,212,0.35), rgba(59,130,246,0.35), rgba(139,92,246,0.25))' }}>
             <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5 }}
-                className="w-full max-w-md bg-white/10 backdrop-blur-xl border border-white/20 p-8 rounded-3xl shadow-2xl relative z-10 text-slate-100"
+                className="w-full bg-white/5 backdrop-blur-xl p-8 rounded-3xl shadow-2xl text-slate-100"
             >
                 <div className="flex justify-center mb-8">
-                    <div className="w-16 h-16 bg-ink/50 rounded-2xl flex items-center justify-center shadow-lg shadow-gold/20">
-                        <Settings className="w-8 h-8 text-navy-900" />
+                    <div className="w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-500/30" style={{ background: 'linear-gradient(135deg, #06b6d4, #3b82f6, #8b5cf6)' }}>
+                        <Settings className="w-8 h-8 text-white" />
                     </div>
                 </div>
 
-                <h1 className="text-3xl font-bold text-center mb-2">Studio Control</h1>
+                <h1 className="text-3xl font-bold text-center mb-2">Potfolio - Azeem</h1>
                 <p className="text-center text-slate-100/60 font-light mb-8">Secure access to project &amp; content management.</p>
 
                 {error && (
@@ -68,7 +81,7 @@ export default function Admin() {
                                 type="email"
                                 value={formData.email}
                                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                                className="w-full bg-black/30 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-gold transition-all placeholder:text-slate-100/20"
+                                className="w-full bg-black/30 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-white focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-blue-500/30 transition-all placeholder:text-slate-100/20"
                                 placeholder="admin@portfolio.com"
                                 required
                                 disabled={loading}
@@ -84,8 +97,8 @@ export default function Admin() {
                                 type="password"
                                 value={formData.password}
                                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                                className="w-full bg-black/30 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-gold transition-all placeholder:text-slate-100/20"
-                                placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+                                className="w-full bg-black/30 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-white focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-blue-500/30 transition-all placeholder:text-slate-100/20"
+                                placeholder="••••••••"
                                 required
                                 disabled={loading}
                             />
@@ -96,7 +109,8 @@ export default function Admin() {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full py-3.5 bg-ink/50 text-navy-900 font-bold text-lg rounded-xl hover:bg-blue-500-light hover:shadow-lg hover:shadow-gold/20 transition-all active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                            className="w-full py-3.5 font-bold text-lg rounded-xl transition-all active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-white shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 hover:scale-[1.01]"
+                            style={{ background: 'linear-gradient(135deg, #06b6d4, #3b82f6, #8b5cf6)' }}
                         >
                             {loading ? (
                                 <><Loader2 className="w-5 h-5 animate-spin" /> Authenticating...</>
@@ -105,6 +119,7 @@ export default function Admin() {
                     </div>
                 </form>
             </motion.div>
+            </div>
         </div>
     );
 }

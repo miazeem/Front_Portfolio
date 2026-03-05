@@ -1,35 +1,28 @@
-﻿import React from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Layout, Server, Database, TerminalSquare, CheckCircle } from 'lucide-react';
+import { Layout, Server, Database, TerminalSquare, CheckCircle, Loader2, Code2 } from 'lucide-react';
+import { skillService } from '../services/api';
 
-const skillCategories = [
-    {
-        num: '01', icon: <Layout className="w-5 h-5" />, title: 'Frontend',
-        color: 'from-cyan-500/20 to-blue-500/20', border: 'border-cyan-500/20',
-        hoverBorder: 'hover:border-cyan-500/40', iconColor: 'text-cyan-400',
-        skills: ['React 19', 'Next.js', 'Tailwind CSS', 'Framer Motion', 'TypeScript'],
-    },
-    {
-        num: '02', icon: <Server className="w-5 h-5" />, title: 'Backend',
-        color: 'from-blue-500/20 to-violet-500/20', border: 'border-blue-500/20',
-        hoverBorder: 'hover:border-blue-500/40', iconColor: 'text-blue-400',
-        skills: ['Laravel API', 'Node.js', 'Express', 'REST/GraphQL', 'WebSockets'],
-    },
-    {
-        num: '03', icon: <Database className="w-5 h-5" />, title: 'Data & Storage',
-        color: 'from-violet-500/20 to-purple-500/20', border: 'border-violet-500/20',
-        hoverBorder: 'hover:border-violet-500/40', iconColor: 'text-violet-400',
-        skills: ['PostgreSQL', 'MySQL', 'Redis', 'MongoDB', 'AWS S3'],
-    },
-    {
-        num: '04', icon: <TerminalSquare className="w-5 h-5" />, title: 'DevOps & Cloud',
-        color: 'from-emerald-500/20 to-cyan-500/20', border: 'border-emerald-500/20',
-        hoverBorder: 'hover:border-emerald-500/40', iconColor: 'text-emerald-400',
-        skills: ['Docker', 'GitHub Actions', 'AWS EC2', 'Vercel', 'Linux'],
-    },
+const CATEGORY_STYLES = [
+    { color: 'from-cyan-500/20 to-blue-500/20',    border: 'border-cyan-500/20',   hoverBorder: 'hover:border-cyan-500/40',   iconColor: 'text-cyan-400',   icon: <Layout className="w-5 h-5" /> },
+    { color: 'from-blue-500/20 to-violet-500/20',  border: 'border-blue-500/20',   hoverBorder: 'hover:border-blue-500/40',   iconColor: 'text-blue-400',   icon: <Server className="w-5 h-5" /> },
+    { color: 'from-violet-500/20 to-purple-500/20',border: 'border-violet-500/20', hoverBorder: 'hover:border-violet-500/40', iconColor: 'text-violet-400', icon: <Database className="w-5 h-5" /> },
+    { color: 'from-emerald-500/20 to-cyan-500/20', border: 'border-emerald-500/20',hoverBorder: 'hover:border-emerald-500/40',iconColor: 'text-emerald-400',icon: <TerminalSquare className="w-5 h-5" /> },
+    { color: 'from-orange-500/20 to-rose-500/20',  border: 'border-orange-500/20', hoverBorder: 'hover:border-orange-500/40', iconColor: 'text-orange-400', icon: <Code2 className="w-5 h-5" /> },
 ];
 
 export default function Skills() {
+    const [grouped, setGrouped] = useState({});
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        skillService.getAll()
+            .then(data => setGrouped(data))
+            .catch(() => {})
+            .finally(() => setLoading(false));
+    }, []);
+
+    const categories = Object.entries(grouped);
     return (
         <section id="skills" className="relative py-28 px-6 md:px-10 bg-navy-900 overflow-hidden">
 
@@ -56,32 +49,42 @@ export default function Skills() {
                     </p>
                 </motion.div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-                    {skillCategories.map((cat, i) => (
-                        <motion.div
-                            key={i}
-                            initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.1 }}
-                            className={`group glass-card rounded-2xl p-6 border transition-all duration-300 ${cat.border} ${cat.hoverBorder}`}
-                        >
-                            <div className="flex items-start justify-between mb-5">
-                                <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${cat.color} border ${cat.border} flex items-center justify-center ${cat.iconColor}`}>
-                                    {cat.icon}
-                                </div>
-                                <span className="font-mono text-4xl font-bold text-white/[0.04]">{cat.num}</span>
-                            </div>
-                            <h3 className="text-white font-display font-bold text-lg mb-4">{cat.title}</h3>
-                            <ul className="space-y-2.5">
-                                {cat.skills.map((skill, j) => (
-                                    <li key={j} className="flex items-center gap-2.5 text-slate-400 text-sm">
-                                        <CheckCircle className={`w-3.5 h-3.5 ${cat.iconColor} opacity-60 shrink-0`} />
-                                        {skill}
-                                    </li>
-                                ))}
-                            </ul>
-                        </motion.div>
-                    ))}
-                </div>
+                {loading ? (
+                    <div className="flex items-center justify-center py-20">
+                        <Loader2 className="w-8 h-8 text-blue-400 animate-spin" />
+                    </div>
+                ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+                        {categories.map(([title, skills], i) => {
+                            const style = CATEGORY_STYLES[i % CATEGORY_STYLES.length];
+                            const num = String(i + 1).padStart(2, '0');
+                            return (
+                                <motion.div
+                                    key={title}
+                                    initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.1 }}
+                                    className={`group glass-card rounded-2xl p-6 border transition-all duration-300 ${style.border} ${style.hoverBorder}`}
+                                >
+                                    <div className="flex items-start justify-between mb-5">
+                                        <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${style.color} border ${style.border} flex items-center justify-center ${style.iconColor}`}>
+                                            {style.icon}
+                                        </div>
+                                        <span className="font-mono text-4xl font-bold text-white/[0.04]">{num}</span>
+                                    </div>
+                                    <h3 className="text-white font-display font-bold text-lg mb-4">{title}</h3>
+                                    <ul className="space-y-2.5">
+                                        {(skills || []).map((skill, j) => (
+                                            <li key={j} className="flex items-center gap-2.5 text-slate-400 text-sm">
+                                                <CheckCircle className={`w-3.5 h-3.5 ${style.iconColor} opacity-60 shrink-0`} />
+                                                {skill}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </motion.div>
+                            );
+                        })}
+                    </div>
+                )}
             </div>
         </section>
     );

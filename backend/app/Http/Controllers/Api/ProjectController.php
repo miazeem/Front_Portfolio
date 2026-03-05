@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Project;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProjectController extends Controller
 {
@@ -32,7 +33,7 @@ class ProjectController extends Controller
             'title'      => 'required|string|max:255',
             'problem'    => 'required|string',
             'solution'   => 'required|string',
-            'image_url'  => 'nullable|url',
+            'image_url'  => 'nullable|string|max:1000',
             'live_url'   => 'nullable|url',
             'github_url' => 'nullable|url',
             'tags'       => 'nullable|array',
@@ -49,7 +50,7 @@ class ProjectController extends Controller
             'title'      => 'string|max:255',
             'problem'    => 'string',
             'solution'   => 'string',
-            'image_url'  => 'nullable|url',
+            'image_url'  => 'nullable|string|max:1000',
             'live_url'   => 'nullable|url',
             'github_url' => 'nullable|url',
             'tags'       => 'nullable|array',

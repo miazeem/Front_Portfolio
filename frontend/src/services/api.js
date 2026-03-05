@@ -66,11 +66,41 @@ export const adminTestimonialService = {
 export const adminMessageService = {
     getAll: () => api.get('/admin/messages').then(r => r.data),
     markRead: (id) => api.patch(`/admin/messages/${id}/read`).then(r => r.data),
+    delete: (id) => api.delete(`/admin/messages/${id}`).then(r => r.data),
 };
 
 export const settingsService = {
     getAll: () => api.get('/settings').then(r => r.data),
     update: (data) => api.put('/admin/settings', data).then(r => r.data),
+    uploadProfileImage: (file) => {
+        const form = new FormData();
+        form.append('image', file);
+        return api.post('/admin/upload-profile-image', form, {
+            headers: { 'Content-Type': 'multipart/form-data' },
+        }).then(r => r.data);
+    },
+};
+
+export const uploadService = {
+    image: (file, folder = 'uploads') => {
+        const form = new FormData();
+        form.append('image', file);
+        form.append('folder', folder);
+        return api.post('/admin/upload-image', form, {
+            headers: { 'Content-Type': 'multipart/form-data' },
+        }).then(r => r.data);
+    },
+};
+
+export const skillService = {
+    getAll: () => api.get('/skills').then(r => r.data),
+};
+
+export const adminSkillService = {
+    getAll: () => api.get('/admin/skills').then(r => r.data),
+    create: (data) => api.post('/admin/skills', data).then(r => r.data),
+    update: (id, data) => api.put(`/admin/skills/${id}`, data).then(r => r.data),
+    delete: (id) => api.delete(`/admin/skills/${id}`).then(r => r.data),
 };
 
 export default api;
