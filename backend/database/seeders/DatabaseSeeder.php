@@ -56,6 +56,28 @@ class DatabaseSeeder extends Seeder
                 'order'      => 3,
                 'is_featured'=> true,
             ],
+            [
+                'title'      => 'EduSync Platform',
+                'problem'    => 'Schools lacked a unified system to track student progress, assignments, and teacher feedback across departments.',
+                'solution'   => 'Built a multi-tenant SaaS platform with role-based access, real-time notifications, and a dynamic reporting dashboard serving 200+ schools.',
+                'image_url'  => 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1000&auto=format&fit=crop',
+                'live_url'   => null,
+                'github_url' => null,
+                'tags'       => ['React', 'Node.js', 'MongoDB', 'Socket.io'],
+                'order'      => 4,
+                'is_featured'=> true,
+            ],
+            [
+                'title'      => 'LogiTrack Logistics',
+                'problem'    => 'Fleet managers had no real-time visibility into vehicle locations, delivery status, or driver performance metrics.',
+                'solution'   => 'Engineered a real-time GPS tracking system with live map views, automated ETA calculations, and driver score analytics using WebSockets.',
+                'image_url'  => 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=1000&auto=format&fit=crop',
+                'live_url'   => null,
+                'github_url' => null,
+                'tags'       => ['Laravel', 'Vue.js', 'MySQL', 'Google Maps API'],
+                'order'      => 5,
+                'is_featured'=> true,
+            ],
         ];
 
         foreach ($projects as $project) {
