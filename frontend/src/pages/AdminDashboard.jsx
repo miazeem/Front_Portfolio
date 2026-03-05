@@ -13,8 +13,20 @@ import {
     adminMessageService,
     settingsService,
     adminSkillService,
-    uploadService,
 } from '../services/api';
+
+async function uploadToCloudinary(file, folder = 'uploads') {
+    const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
+    const preset    = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
+    const body = new FormData();
+    body.append('file', file);
+    body.append('upload_preset', preset);
+    body.append('folder', 'portfolio/' + folder);
+    const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, { method: 'POST', body });
+    if (!res.ok) throw new Error('Cloudinary upload failed');
+    const data = await res.json();
+    return data.secure_url;
+}
 
 /* --- Reusable Modal ---------------------------- */
 function Modal({ title, onClose, children }) {
@@ -63,7 +75,7 @@ function ImageUploadField({ label, value, onChange, folder }) {
         if (!file) return;
         setUploading(true);
         try {
-            const { url } = await uploadService.image(file, folder);
+            const url = await uploadToCloudinary(file, folder);
             onChange(url);
         } catch (err) {
             console.error('Upload failed', err);
@@ -289,8 +301,9 @@ export default function AdminDashboard() {
         if (!file) return;
         setImageUploading(true);
         try {
-            const { url } = await settingsService.uploadProfileImage(file);
+            const url = await uploadToCloudinary(file, 'profile');
             setSettings(s => ({ ...s, profile_image_url: url }));
+            await settingsService.update({ ...settings, profile_image_url: url });
         } catch (err) {
             console.error('Image upload failed', err);
         } finally {
@@ -416,6 +429,7 @@ export default function AdminDashboard() {
                             <table className="w-full text-sm">
                                 <thead className="border-b border-white/10 text-slate-100/50 text-xs uppercase">
                                     <tr>
+                                        <th className="text-left px-4 py-4 hidden sm:table-cell w-16">Image</th>
                                         <th className="text-left px-6 py-4">Title</th>
                                         <th className="text-left px-6 py-4 hidden md:table-cell">Tags</th>
                                         <th className="text-left px-6 py-4">Featured</th>
@@ -425,6 +439,13 @@ export default function AdminDashboard() {
                                 <tbody className="divide-y divide-white/5">
                                     {projects.map(p => (
                                         <tr key={p.id} className="hover:bg-white/5 transition-colors group">
+                                            <td className="px-4 py-3 hidden sm:table-cell">
+                                                {p.image_url ? (
+                                                    <img src={p.image_url} alt={p.title} className="w-14 h-10 object-cover rounded-lg border border-white/10" />
+                                                ) : (
+                                                    <div className="w-14 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-slate-600 text-xs">No img</div>
+                                                )}
+                                            </td>
                                             <td className="px-6 py-4 font-semibold">{p.title}</td>
                                             <td className="px-6 py-4 hidden md:table-cell">
                                                 <div className="flex flex-wrap gap-1">
@@ -451,7 +472,7 @@ export default function AdminDashboard() {
                                         </tr>
                                     ))}
                                     {projects.length === 0 && (
-                                        <tr><td colSpan="4" className="px-6 py-12 text-center text-slate-100/30">No projects yet. Add one above.</td></tr>
+                                        <tr><td colSpan="5" className="px-6 py-12 text-center text-slate-100/30">No projects yet. Add one above.</td></tr>
                                     )}
                                 </tbody>
                             </table>
