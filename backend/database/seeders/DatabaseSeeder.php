@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Project;
+use App\Models\Setting;
 use App\Models\Testimonial;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -130,6 +131,20 @@ class DatabaseSeeder extends Seeder
 
         foreach ($testimonials as $t) {
             Testimonial::firstOrCreate(['name' => $t['name']], $t);
+        }
+
+        /* ── Settings ────────────────────────────── */
+        $settings = [
+            'contact_email'     => 'miazeem@gmail.com',
+            'contact_location'  => 'Available Worldwide · Remote',
+            'github_url'        => 'https://github.com/miazeem',
+            'linkedin_url'      => 'https://linkedin.com/in/azeemsaas',
+            'cv_url'            => 'https://www.cv.com/',
+            'profile_image_url' => '/profile.jpg',
+        ];
+
+        foreach ($settings as $key => $value) {
+            Setting::firstOrCreate(['key' => $key], ['value' => $value]);
         }
     }
 }
