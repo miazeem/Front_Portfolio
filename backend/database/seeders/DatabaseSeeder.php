@@ -80,6 +80,30 @@ class DatabaseSeeder extends Seeder
                 'avatar_url' => 'https://i.pravatar.cc/100?img=11',
                 'order'      => 2,
             ],
+            [
+                'name'       => 'Priya Nair',
+                'role'       => 'Lead Designer',
+                'company'    => 'Pixel Foundry',
+                'message'    => 'Rare to find a developer who genuinely cares about UX. He pushed back on bad ideas and made our product beautiful.',
+                'avatar_url' => 'https://i.pravatar.cc/100?img=5',
+                'order'      => 3,
+            ],
+            [
+                'name'       => 'James O\'Brien',
+                'role'       => 'Engineering Manager',
+                'company'    => 'CloudOps Inc.',
+                'message'    => 'He delivered a robust microservices architecture on time and under budget. The team still talks about how clean the codebase is.',
+                'avatar_url' => 'https://i.pravatar.cc/100?img=33',
+                'order'      => 4,
+            ],
+            [
+                'name'       => 'Aiko Tanaka',
+                'role'       => 'Startup Founder',
+                'company'    => 'NeuralBridge',
+                'message'    => 'He took our vague MVP idea and shipped a fully working product in six weeks. Absolutely indispensable.',
+                'avatar_url' => 'https://i.pravatar.cc/100?img=20',
+                'order'      => 5,
+            ],
         ];
 
         foreach ($testimonials as $t) {

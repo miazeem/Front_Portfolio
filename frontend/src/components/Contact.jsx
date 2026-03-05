@@ -1,12 +1,21 @@
-import React, { useState } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, MapPin, Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
-import { contactService } from '../services/api';
+import { Mail, MapPin, Send, Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
+import { contactService, settingsService } from '../services/api';
 
 export default function Contact() {
     const [form, setForm] = useState({ name: '', email: '', message: '' });
-    const [status, setStatus] = useState('idle'); // idle | loading | success | error
+    const [status, setStatus] = useState('idle');
     const [errorMsg, setErrorMsg] = useState('');
+    const [info, setInfo] = useState({
+        contact_email: 'hello@portfolio.studio',
+        contact_location: 'Available Worldwide · Remote',
+        github_url: 'https://github.com',
+    });
+
+    useEffect(() => {
+        settingsService.getAll().then(s => setInfo(prev => ({ ...prev, ...s }))).catch(() => {});
+    }, []);
 
     const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
 
@@ -27,127 +36,129 @@ export default function Contact() {
         }
     };
 
+    const inputCls = "w-full bg-white/[0.04] border border-white/[0.08] focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20 rounded-xl px-4 py-3 text-white text-sm outline-none transition-all placeholder:text-slate-600";
+
     return (
-        <section id="contact" className="py-32 px-6 relative overflow-hidden bg-brand-800 text-white">
-            {/* Decorative background */}
-            <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-brand-600/20 rounded-organic-1 blur-3xl -translate-y-1/2 translate-x-1/3 animate-morph" />
+        <section id="contact" className="relative py-28 px-6 md:px-10 bg-navy-800 overflow-hidden">
 
-            <div className="max-w-6xl mx-auto relative z-10 flex flex-col md:flex-row gap-16 items-center">
+            <div className="absolute inset-0 bg-dot-grid opacity-50" />
+            <div className="absolute bottom-0 left-1/4 w-[500px] h-[500px] rounded-full bg-blue-600/[0.08] blur-[120px] pointer-events-none" />
+            <div className="absolute top-1/4 right-1/6 w-[300px] h-[300px] rounded-full bg-violet-600/[0.08] blur-[80px] pointer-events-none" />
 
-                {/* Left – copy */}
-                <div className="w-full md:w-1/2">
+            <div className="relative z-10 max-w-7xl mx-auto">
+
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }} transition={{ duration: 0.5 }}
+                    className="text-center mb-16"
+                >
+                    <div className="flex items-center justify-center gap-3 mb-4">
+                        <div className="h-px w-8 bg-gradient-to-r from-cyan-400 to-blue-500" />
+                        <span className="text-xs font-semibold tracking-widest uppercase text-cyan-400">Contact</span>
+                        <div className="h-px w-8 bg-gradient-to-l from-blue-500 to-cyan-400" />
+                    </div>
+                    <h2 className="text-4xl md:text-5xl font-display font-bold text-white mb-4">
+                        Get In <span className="text-gradient">Touch</span>
+                    </h2>
+                    <p className="text-slate-400 max-w-xl mx-auto">
+                        Ready to build something great? Let's talk about your project.
+                    </p>
+                </motion.div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+
+                    {/* Left: info */}
                     <motion.div
-                        initial={{ opacity: 0, x: -50 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.8 }}
+                        initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }} transition={{ duration: 0.7 }}
                     >
-                        <h2 className="text-5xl md:text-7xl font-bold mb-6 text-balance">
-                            Let's build something <span className="text-brand-400 italic">remarkable</span>.
-                        </h2>
-                        <p className="text-xl text-brand-100/80 mb-12 font-light max-w-md">
-                            Whether you need a full-stack overhaul or a specific feature architected, I'm ready to dive in.
+                        <h3 className="text-2xl font-display font-bold text-white mb-4">
+                            Let's build something{' '}
+                            <span className="text-gradient">remarkable</span>
+                        </h3>
+                        <p className="text-slate-400 leading-relaxed mb-8">
+                            Whether you need a full-stack overhaul or a specific feature architected,
+                            I'm ready to dive in and make it happen.
                         </p>
 
-                        <div className="space-y-6">
-                            <a href="mailto:hello@portfolio.studio" className="group flex items-center gap-4 text-xl hover:text-brand-400 transition-colors">
-                                <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-brand-400/20 group-hover:scale-110 transition-all">
+                        <div className="space-y-4">
+                            <a href={`mailto:${info.contact_email}`}
+                                className="flex items-center gap-4 p-4 glass-card glass-card-hover rounded-xl transition-all group">
+                                <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-blue-500/20 to-cyan-500/20 border border-blue-500/20 flex items-center justify-center text-blue-400 shrink-0">
                                     <Mail className="w-5 h-5" />
                                 </div>
-                                hello@portfolio.studio
+                                <div>
+                                    <p className="text-xs text-slate-500 uppercase tracking-wide mb-0.5">Email</p>
+                                    <p className="text-white text-sm font-medium">{info.contact_email}</p>
+                                </div>
                             </a>
-                            <div className="flex items-center gap-4 text-xl text-brand-100/60">
-                                <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center">
+                            <div className="flex items-center gap-4 p-4 glass-card rounded-xl">
+                                <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-violet-500/20 to-purple-500/20 border border-violet-500/20 flex items-center justify-center text-violet-400 shrink-0">
                                     <MapPin className="w-5 h-5" />
                                 </div>
-                                Available Worldwide
+                                <div>
+                                    <p className="text-xs text-slate-500 uppercase tracking-wide mb-0.5">Location</p>
+                                    <p className="text-white text-sm font-medium">{info.contact_location}</p>
+                                </div>
                             </div>
                         </div>
                     </motion.div>
-                </div>
 
-                {/* Right – form */}
-                <div className="w-full md:w-1/2">
+                    {/* Right: form */}
                     <motion.form
                         onSubmit={handleSubmit}
-                        initial={{ opacity: 0, y: 50 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.8, delay: 0.2 }}
-                        className="p-8 md:p-12 bg-white/5 backdrop-blur-xl border border-white/10 rounded-[2.5rem] shadow-2xl space-y-6 relative"
+                        initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }} transition={{ duration: 0.7 }}
+                        className="glass-card rounded-2xl p-8 space-y-5"
                     >
-                        <div className="absolute -top-6 -left-6 w-12 h-12 bg-brand-500 rounded-full animate-bounce" style={{ animationDuration: '3s' }} />
-
-                        {/* Success state */}
                         {status === 'success' && (
-                            <motion.div
-                                initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
-                                className="flex items-center gap-3 p-4 bg-emerald-500/20 border border-emerald-500/30 rounded-xl text-emerald-300"
-                            >
-                                <CheckCircle2 className="w-5 h-5 shrink-0" />
-                                <span>Message sent! I'll get back to you soon.</span>
+                            <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
+                                className="flex items-center gap-3 p-4 bg-emerald-500/10 border border-emerald-500/20 rounded-xl text-emerald-400 text-sm">
+                                <CheckCircle2 className="w-4 h-4 shrink-0" />
+                                Message sent! I'll get back to you soon.
                             </motion.div>
                         )}
-
-                        {/* Error state */}
                         {status === 'error' && (
-                            <motion.div
-                                initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
-                                className="flex items-center gap-3 p-4 bg-red-500/20 border border-red-500/30 rounded-xl text-red-300"
-                            >
-                                <AlertCircle className="w-5 h-5 shrink-0" />
-                                <span>{errorMsg}</span>
+                            <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
+                                className="flex items-center gap-3 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-sm">
+                                <AlertCircle className="w-4 h-4 shrink-0" />
+                                {errorMsg}
                             </motion.div>
                         )}
 
-                        <div>
-                            <label htmlFor="name" className="block text-sm font-medium text-brand-100/80 mb-2">Name</label>
-                            <input
-                                type="text" id="name" required
-                                value={form.name}
-                                onChange={e => set('name', e.target.value)}
-                                className="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all placeholder:text-white/20"
-                                placeholder="John Doe"
-                                disabled={status === 'loading'}
-                            />
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                            <div>
+                                <label className="block text-xs text-slate-400 uppercase tracking-wide mb-2">Name</label>
+                                <input type="text" required value={form.name}
+                                    onChange={e => set('name', e.target.value)} disabled={status === 'loading'}
+                                    placeholder="John Doe" className={inputCls} />
+                            </div>
+                            <div>
+                                <label className="block text-xs text-slate-400 uppercase tracking-wide mb-2">Email</label>
+                                <input type="email" required value={form.email}
+                                    onChange={e => set('email', e.target.value)} disabled={status === 'loading'}
+                                    placeholder="john@company.com" className={inputCls} />
+                            </div>
                         </div>
 
                         <div>
-                            <label htmlFor="email" className="block text-sm font-medium text-brand-100/80 mb-2">Email</label>
-                            <input
-                                type="email" id="email" required
-                                value={form.email}
-                                onChange={e => set('email', e.target.value)}
-                                className="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all placeholder:text-white/20"
-                                placeholder="john@startup.com"
-                                disabled={status === 'loading'}
-                            />
+                            <label className="block text-xs text-slate-400 uppercase tracking-wide mb-2">Message</label>
+                            <textarea rows="5" required value={form.message}
+                                onChange={e => set('message', e.target.value)} disabled={status === 'loading'}
+                                placeholder="Tell me about your project..."
+                                className={inputCls + " resize-none"} />
                         </div>
 
-                        <div>
-                            <label htmlFor="message" className="block text-sm font-medium text-brand-100/80 mb-2">Project Details</label>
-                            <textarea
-                                id="message" rows="4" required
-                                value={form.message}
-                                onChange={e => set('message', e.target.value)}
-                                className="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all resize-none placeholder:text-white/20"
-                                placeholder="Tell me about your goals..."
-                                disabled={status === 'loading'}
-                            />
-                        </div>
-
-                        <button
-                            type="submit"
-                            disabled={status === 'loading'}
-                            className="w-full py-4 bg-brand-500 text-brand-900 font-bold text-lg rounded-xl hover:bg-brand-400 hover:shadow-lg hover:shadow-brand-500/20 transition-all active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                        >
+                        <button type="submit" disabled={status === 'loading'}
+                            className="w-full py-3.5 btn-gradient text-white font-semibold rounded-xl shadow-lg shadow-blue-500/20 hover:shadow-blue-500/35 transition-shadow disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
                             {status === 'loading' ? (
-                                <><Loader2 className="w-5 h-5 animate-spin" /> Sending...</>
-                            ) : 'Send Message'}
+                                <><Loader2 className="w-4 h-4 animate-spin" /> Sending...</>
+                            ) : (
+                                <><Send className="w-4 h-4" /> Send Message</>
+                            )}
                         </button>
                     </motion.form>
                 </div>
-
             </div>
         </section>
     );

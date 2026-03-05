@@ -1,88 +1,87 @@
-import React from 'react';
+﻿import React from 'react';
 import { motion } from 'framer-motion';
-import { Database, Layout, Server, Settings2, ShieldCheck, TerminalSquare } from 'lucide-react';
+import { Layout, Server, Database, TerminalSquare, CheckCircle } from 'lucide-react';
 
 const skillCategories = [
     {
-        title: "Frontend Architecture",
-        icon: <Layout className="w-6 h-6" />,
-        skills: ["React 19", "Next.js", "Tailwind CSS", "Framer Motion", "TypeScript"],
-        color: "bg-orange-100 text-orange-800 border-orange-200"
+        num: '01', icon: <Layout className="w-5 h-5" />, title: 'Frontend',
+        color: 'from-cyan-500/20 to-blue-500/20', border: 'border-cyan-500/20',
+        hoverBorder: 'hover:border-cyan-500/40', iconColor: 'text-cyan-400',
+        skills: ['React 19', 'Next.js', 'Tailwind CSS', 'Framer Motion', 'TypeScript'],
     },
     {
-        title: "Backend Services",
-        icon: <Server className="w-6 h-6" />,
-        skills: ["Laravel API", "Node.js", "Express", "REST/GraphQL", "WebSockets"],
-        color: "bg-blue-100 text-blue-800 border-blue-200"
+        num: '02', icon: <Server className="w-5 h-5" />, title: 'Backend',
+        color: 'from-blue-500/20 to-violet-500/20', border: 'border-blue-500/20',
+        hoverBorder: 'hover:border-blue-500/40', iconColor: 'text-blue-400',
+        skills: ['Laravel API', 'Node.js', 'Express', 'REST/GraphQL', 'WebSockets'],
     },
     {
-        title: "Data & Storage",
-        icon: <Database className="w-6 h-6" />,
-        skills: ["PostgreSQL", "MySQL", "Redis", "MongoDB", "AWS S3"],
-        color: "bg-emerald-100 text-emerald-800 border-emerald-200"
+        num: '03', icon: <Database className="w-5 h-5" />, title: 'Data & Storage',
+        color: 'from-violet-500/20 to-purple-500/20', border: 'border-violet-500/20',
+        hoverBorder: 'hover:border-violet-500/40', iconColor: 'text-violet-400',
+        skills: ['PostgreSQL', 'MySQL', 'Redis', 'MongoDB', 'AWS S3'],
     },
     {
-        title: "DevOps & Cloud",
-        icon: <TerminalSquare className="w-6 h-6" />,
-        skills: ["Docker", "GitHub Actions", "AWS EC2", "Vercel", "Linux"],
-        color: "bg-purple-100 text-purple-800 border-purple-200"
-    }
+        num: '04', icon: <TerminalSquare className="w-5 h-5" />, title: 'DevOps & Cloud',
+        color: 'from-emerald-500/20 to-cyan-500/20', border: 'border-emerald-500/20',
+        hoverBorder: 'hover:border-emerald-500/40', iconColor: 'text-emerald-400',
+        skills: ['Docker', 'GitHub Actions', 'AWS EC2', 'Vercel', 'Linux'],
+    },
 ];
-
-const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-        opacity: 1,
-        transition: { staggerChildren: 0.1 }
-    }
-};
-
-const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: { y: 0, opacity: 1, transition: { type: "spring", stiffness: 100 } }
-};
 
 export default function Skills() {
     return (
-        <section id="skills" className="py-24 px-6 relative bg-grid-pattern">
-            <div className="max-w-7xl mx-auto relative z-10">
+        <section id="skills" className="relative py-28 px-6 md:px-10 bg-navy-900 overflow-hidden">
 
-                <div className="flex flex-col md:flex-row items-baseline justify-between mb-16 border-b border-brand-200 pb-8">
-                    <h2 className="text-4xl md:text-5xl font-bold text-brand-900 flex items-center gap-4">
-                        <Settings2 className="w-10 h-10 text-brand-500 animate-spin-slow" style={{ animationDuration: '10s' }} />
-                        System Blueprint
-                    </h2>
-                    <p className="text-xl text-brand-800/60 font-light mt-4 md:mt-0">The tools I use to architect digital products.</p>
-                </div>
+            <div className="absolute inset-0 bg-dot-grid" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full bg-blue-600/[0.07] blur-[150px] pointer-events-none" />
+
+            <div className="relative z-10 max-w-7xl mx-auto">
 
                 <motion.div
-                    variants={containerVariants}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true, margin: "-100px" }}
-                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+                    initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }} transition={{ duration: 0.5 }}
+                    className="text-center mb-16"
                 >
-                    {skillCategories.map((category, idx) => (
+                    <div className="flex items-center justify-center gap-3 mb-4">
+                        <div className="h-px w-8 bg-gradient-to-r from-cyan-400 to-blue-500" />
+                        <span className="text-xs font-semibold tracking-widest uppercase text-cyan-400">Expertise</span>
+                        <div className="h-px w-8 bg-gradient-to-l from-blue-500 to-cyan-400" />
+                    </div>
+                    <h2 className="text-4xl md:text-5xl font-display font-bold text-white mb-4">
+                        My <span className="text-gradient">Technical Stack</span>
+                    </h2>
+                    <p className="text-slate-400 max-w-xl mx-auto text-base">
+                        Technologies and tools I use to build reliable, scalable digital products.
+                    </p>
+                </motion.div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+                    {skillCategories.map((cat, i) => (
                         <motion.div
-                            key={idx}
-                            variants={itemVariants}
-                            className={`p-6 rounded-[2rem] border glass-panel transition-transform hover:-translate-y-2 ${category.color.replace('text-', 'hover:border-').split(' ')[2]}`}
+                            key={i}
+                            initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.1 }}
+                            className={`group glass-card rounded-2xl p-6 border transition-all duration-300 ${cat.border} ${cat.hoverBorder}`}
                         >
-                            <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 border ${category.color}`}>
-                                {category.icon}
+                            <div className="flex items-start justify-between mb-5">
+                                <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${cat.color} border ${cat.border} flex items-center justify-center ${cat.iconColor}`}>
+                                    {cat.icon}
+                                </div>
+                                <span className="font-mono text-4xl font-bold text-white/[0.04]">{cat.num}</span>
                             </div>
-                            <h3 className="text-2xl font-semibold mb-4 text-brand-900">{category.title}</h3>
-                            <ul className="space-y-3">
-                                {category.skills.map((skill, sIdx) => (
-                                    <li key={sIdx} className="flex items-center gap-2 text-brand-800/80 font-medium">
-                                        <ShieldCheck className="w-4 h-4 text-brand-500 opacity-70" />
+                            <h3 className="text-white font-display font-bold text-lg mb-4">{cat.title}</h3>
+                            <ul className="space-y-2.5">
+                                {cat.skills.map((skill, j) => (
+                                    <li key={j} className="flex items-center gap-2.5 text-slate-400 text-sm">
+                                        <CheckCircle className={`w-3.5 h-3.5 ${cat.iconColor} opacity-60 shrink-0`} />
                                         {skill}
                                     </li>
                                 ))}
                             </ul>
                         </motion.div>
                     ))}
-                </motion.div>
+                </div>
             </div>
         </section>
     );

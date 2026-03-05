@@ -1,4 +1,4 @@
-/** @type {import('tailwindcss').Config} */
+﻿/** @type {import('tailwindcss').Config} */
 export default {
     content: [
         "./index.html",
@@ -7,46 +7,35 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                display: ['Syne', 'sans-serif'],
-                body: ['Outfit', 'sans-serif'],
+                display: ['Manrope', 'sans-serif'],
+                body: ['Inter', 'sans-serif'],
             },
             colors: {
-                brand: {
-                    50: '#fdf8f6',
-                    100: '#f2e8e5',
-                    200: '#eaddd7',
-                    300: '#e0cec7',
-                    400: '#d2bab0',
-                    500: '#a3a5ee', /* vibrant yet soft accent */
-                    600: '#8e8bfa',
-                    700: '#645cf4',
-                    800: '#1b1b1f',
-                    900: '#0f0f11',
+                navy: {
+                    950: '#03050d',
+                    900: '#060918',
+                    800: '#090e22',
+                    700: '#0d1228',
+                    600: '#131830',
+                    500: '#1a2040',
+                    400: '#232b55',
                 },
-                surface: {
-                    light: '#ffffff',
-                    base: '#fafafa',
-                    dark: '#f0f0f0',
-                }
-            },
-            borderRadius: {
-                'organic-1': '60% 40% 30% 70% / 60% 30% 70% 40%',
-                'organic-2': '30% 70% 70% 30% / 30% 30% 70% 70%',
             },
             animation: {
                 'float': 'float 6s ease-in-out infinite',
-                'morph': 'morph 8s ease-in-out infinite',
+                'pulse-slow': 'pulse 4s ease-in-out infinite',
+                'marquee': 'marquee 30s linear infinite',
             },
             keyframes: {
                 float: {
-                    '0%, 100%': { transform: 'translateY(0)' },
-                    '50%': { transform: 'translateY(-20px)' },
+                    '0%, 100%': { transform: 'translateY(0px)' },
+                    '50%': { transform: 'translateY(-12px)' },
                 },
-                morph: {
-                    '0%, 100%': { borderRadius: '60% 40% 30% 70% / 60% 30% 70% 40%' },
-                    '50%': { borderRadius: '30% 70% 70% 30% / 30% 30% 70% 70%' },
-                }
-            }
+                marquee: {
+                    '0%': { transform: 'translateX(0)' },
+                    '100%': { transform: 'translateX(-50%)' },
+                },
+            },
         },
     },
     plugins: [],

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Lock, Settings, User, AlertCircle, Loader2 } from 'lucide-react';
 import { authService } from '../services/api';
@@ -28,25 +28,25 @@ export default function Admin() {
     };
 
     return (
-        <div className="min-h-screen bg-brand-900 flex items-center justify-center p-6 relative overflow-hidden">
+        <div className="min-h-screen bg-navy-900 flex items-center justify-center p-6 relative overflow-hidden">
             {/* Background Ornaments */}
-            <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-brand-600/20 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '4s' }} />
-            <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-brand-400/10 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '6s' }} />
+            <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '4s' }} />
+            <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '6s' }} />
 
             <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5 }}
-                className="w-full max-w-md bg-white/10 backdrop-blur-xl border border-white/20 p-8 rounded-3xl shadow-2xl relative z-10 text-brand-50"
+                className="w-full max-w-md bg-white/10 backdrop-blur-xl border border-white/20 p-8 rounded-3xl shadow-2xl relative z-10 text-slate-100"
             >
                 <div className="flex justify-center mb-8">
-                    <div className="w-16 h-16 bg-brand-500 rounded-2xl flex items-center justify-center shadow-lg shadow-brand-500/20">
-                        <Settings className="w-8 h-8 text-brand-900" />
+                    <div className="w-16 h-16 bg-ink/50 rounded-2xl flex items-center justify-center shadow-lg shadow-gold/20">
+                        <Settings className="w-8 h-8 text-navy-900" />
                     </div>
                 </div>
 
                 <h1 className="text-3xl font-bold text-center mb-2">Studio Control</h1>
-                <p className="text-center text-brand-50/60 font-light mb-8">Secure access to project &amp; content management.</p>
+                <p className="text-center text-slate-100/60 font-light mb-8">Secure access to project &amp; content management.</p>
 
                 {error && (
                     <motion.div
@@ -61,14 +61,14 @@ export default function Admin() {
 
                 <form onSubmit={handleSubmit} className="space-y-5">
                     <div>
-                        <label className="block text-sm font-medium text-brand-50/80 mb-2">Email Address</label>
+                        <label className="block text-sm font-medium text-slate-100/80 mb-2">Email Address</label>
                         <div className="relative">
-                            <User className="absolute left-4 top-3.5 w-5 h-5 text-brand-50/40" />
+                            <User className="absolute left-4 top-3.5 w-5 h-5 text-slate-100/40" />
                             <input
                                 type="email"
                                 value={formData.email}
                                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                                className="w-full bg-black/30 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-white focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-all placeholder:text-brand-50/20"
+                                className="w-full bg-black/30 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-gold transition-all placeholder:text-slate-100/20"
                                 placeholder="admin@portfolio.com"
                                 required
                                 disabled={loading}
@@ -77,15 +77,15 @@ export default function Admin() {
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-brand-50/80 mb-2">Password</label>
+                        <label className="block text-sm font-medium text-slate-100/80 mb-2">Password</label>
                         <div className="relative">
-                            <Lock className="absolute left-4 top-3.5 w-5 h-5 text-brand-50/40" />
+                            <Lock className="absolute left-4 top-3.5 w-5 h-5 text-slate-100/40" />
                             <input
                                 type="password"
                                 value={formData.password}
                                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                                className="w-full bg-black/30 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-white focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-all placeholder:text-brand-50/20"
-                                placeholder="••••••••"
+                                className="w-full bg-black/30 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-gold transition-all placeholder:text-slate-100/20"
+                                placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
                                 required
                                 disabled={loading}
                             />
@@ -96,7 +96,7 @@ export default function Admin() {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full py-3.5 bg-brand-500 text-brand-900 font-bold text-lg rounded-xl hover:bg-brand-400 hover:shadow-lg hover:shadow-brand-500/20 transition-all active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                            className="w-full py-3.5 bg-ink/50 text-navy-900 font-bold text-lg rounded-xl hover:bg-blue-500-light hover:shadow-lg hover:shadow-gold/20 transition-all active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                         >
                             {loading ? (
                                 <><Loader2 className="w-5 h-5 animate-spin" /> Authenticating...</>
@@ -108,3 +108,5 @@ export default function Admin() {
         </div>
     );
 }
+
+

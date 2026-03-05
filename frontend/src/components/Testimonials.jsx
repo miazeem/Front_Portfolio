@@ -1,44 +1,41 @@
-import React, { useEffect, useState } from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Quote, Loader2 } from 'lucide-react';
+import { Quote, Star, Loader2 } from 'lucide-react';
 import { testimonialService } from '../services/api';
 
 function TestimonialCard({ testimonial, index }) {
     return (
         <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-80px' }}
-            transition={{ duration: 0.6, delay: index * 0.15 }}
-            className="relative bg-white rounded-[2rem] p-8 shadow-lg border border-brand-100 flex flex-col gap-6 hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+            initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }} transition={{ duration: 0.5, delay: index * 0.1 }}
+            className="glass-card glass-card-hover rounded-2xl p-6 flex flex-col gap-4 border border-white/[0.07] transition-all duration-300"
         >
-            {/* Quote icon */}
-            <div className="w-10 h-10 bg-brand-500/10 rounded-full flex items-center justify-center">
-                <Quote className="w-5 h-5 text-brand-500" />
+            <div className="flex items-center justify-between">
+                <div className="flex gap-1">
+                    {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="w-4 h-4 text-yellow-400 fill-yellow-400" />
+                    ))}
+                </div>
+                <Quote className="w-6 h-6 text-blue-500/25" />
             </div>
 
-            {/* Message */}
-            <p className="text-brand-800/80 text-lg leading-relaxed flex-1">
-                "{testimonial.message}"
+            <p className="text-slate-300 text-sm leading-relaxed flex-1">
+                &ldquo;{testimonial.message}&rdquo;
             </p>
 
-            {/* Author */}
-            <div className="flex items-center gap-4 pt-4 border-t border-brand-100">
+            <div className="flex items-center gap-3 pt-3 border-t border-white/[0.06]">
                 {testimonial.avatar_url ? (
-                    <img
-                        src={testimonial.avatar_url}
-                        alt={testimonial.name}
-                        className="w-12 h-12 rounded-full object-cover ring-2 ring-brand-200"
-                    />
+                    <img src={testimonial.avatar_url} alt={testimonial.name}
+                        className="w-10 h-10 rounded-full object-cover ring-2 ring-blue-500/30" />
                 ) : (
-                    <div className="w-12 h-12 rounded-full bg-brand-500/20 flex items-center justify-center text-brand-700 font-bold text-lg">
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500/30 to-cyan-500/30 border border-blue-500/30 flex items-center justify-center text-blue-300 font-bold text-sm font-display">
                         {testimonial.name.charAt(0)}
                     </div>
                 )}
                 <div>
-                    <p className="font-bold text-brand-900">{testimonial.name}</p>
-                    <p className="text-sm text-brand-500 font-medium">
-                        {testimonial.role}{testimonial.company ? ` · ${testimonial.company}` : ''}
+                    <p className="text-white text-sm font-semibold">{testimonial.name}</p>
+                    <p className="text-cyan-400 text-xs">
+                        {testimonial.role}{testimonial.company ? `  ${testimonial.company}` : ''}
                     </p>
                 </div>
             </div>
@@ -53,45 +50,44 @@ export default function Testimonials() {
     useEffect(() => {
         testimonialService.getTestimonials()
             .then(data => setTestimonials(data))
-            .catch(() => { })
+            .catch(() => {})
             .finally(() => setLoading(false));
     }, []);
 
-    // Don't render the section if there are no testimonials
     if (!loading && testimonials.length === 0) return null;
 
     return (
-        <section id="testimonials" className="py-32 px-6 bg-brand-50 relative overflow-hidden">
-            {/* Decorative blobs */}
-            <div className="absolute -top-32 -right-32 w-96 h-96 bg-brand-200/40 rounded-full blur-3xl" />
-            <div className="absolute -bottom-32 -left-32 w-96 h-96 bg-brand-300/20 rounded-full blur-3xl" />
+        <section id="testimonials" className="relative py-28 px-6 md:px-10 bg-navy-900 overflow-hidden">
 
-            <div className="max-w-7xl mx-auto relative z-10">
+            <div className="absolute inset-0 bg-dot-grid" />
+            <div className="absolute top-1/2 right-0 w-[400px] h-[400px] rounded-full bg-violet-600/[0.08] blur-[100px] pointer-events-none" />
 
-                {/* Heading */}
+            <div className="relative z-10 max-w-7xl mx-auto">
+
                 <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.7 }}
-                    className="text-center mb-20"
+                    initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }} transition={{ duration: 0.5 }}
+                    className="text-center mb-16"
                 >
-                    <span className="text-brand-500 font-semibold tracking-wide uppercase text-sm">Kind Words</span>
-                    <h2 className="text-4xl md:text-6xl font-bold text-brand-900 mt-4">
-                        What clients <span className="text-brand-400 italic font-medium">say.</span>
+                    <div className="flex items-center justify-center gap-3 mb-4">
+                        <div className="h-px w-8 bg-gradient-to-r from-cyan-400 to-blue-500" />
+                        <span className="text-xs font-semibold tracking-widest uppercase text-cyan-400">Testimonials</span>
+                        <div className="h-px w-8 bg-gradient-to-l from-blue-500 to-cyan-400" />
+                    </div>
+                    <h2 className="text-4xl md:text-5xl font-display font-bold text-white mb-4">
+                        What Clients <span className="text-gradient">Say</span>
                     </h2>
-                    <p className="mt-6 text-xl text-brand-800/60 max-w-xl mx-auto font-light">
+                    <p className="text-slate-400 max-w-xl mx-auto">
                         Results matter more than promises. Here's what people say after we've shipped together.
                     </p>
                 </motion.div>
 
-                {/* Cards */}
                 {loading ? (
                     <div className="flex items-center justify-center py-20">
-                        <Loader2 className="w-10 h-10 text-brand-500 animate-spin" />
+                        <Loader2 className="w-8 h-8 text-blue-400 animate-spin" />
                     </div>
                 ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                         {testimonials.map((t, i) => (
                             <TestimonialCard key={t.id} testimonial={t} index={i} />
                         ))}

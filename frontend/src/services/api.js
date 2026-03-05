@@ -68,4 +68,9 @@ export const adminMessageService = {
     markRead: (id) => api.patch(`/admin/messages/${id}/read`).then(r => r.data),
 };
 
+export const settingsService = {
+    getAll: () => api.get('/settings').then(r => r.data),
+    update: (data) => api.put('/admin/settings', data).then(r => r.data),
+};
+
 export default api;

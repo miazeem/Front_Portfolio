@@ -1,93 +1,104 @@
-import React, { useEffect, useState } from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { ExternalLink, Github, Loader2 } from 'lucide-react';
+import { ExternalLink, Github, Loader2, ArrowUpRight } from 'lucide-react';
 import { projectService } from '../services/api';
 
 export default function Projects() {
     const [projects, setProjects] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
 
     useEffect(() => {
         projectService.getProjects()
             .then(data => setProjects(data))
-            .catch(() => setError('Could not load projects.'))
+            .catch(() => {})
             .finally(() => setLoading(false));
     }, []);
 
     return (
-        <section id="projects" className="py-32 px-6 bg-brand-50 relative">
-            <div className="max-w-7xl mx-auto">
-                <div className="mb-20 text-center">
-                    <span className="text-brand-500 font-semibold tracking-wide uppercase text-sm">Selected Works</span>
-                    <h2 className="text-4xl md:text-6xl font-bold text-brand-900 mt-4">
-                        Solving real problems.<br />
-                        <span className="text-brand-400 italic font-medium">Not just writing logic.</span>
+        <section id="projects" className="relative py-28 px-6 md:px-10 bg-navy-800 overflow-hidden">
+
+            <div className="absolute inset-0 bg-dot-grid opacity-50" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-blue-600/[0.08] blur-[120px] pointer-events-none" />
+
+            <div className="relative z-10 max-w-7xl mx-auto">
+
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }} transition={{ duration: 0.5 }}
+                    className="text-center mb-16"
+                >
+                    <div className="flex items-center justify-center gap-3 mb-4">
+                        <div className="h-px w-8 bg-gradient-to-r from-cyan-400 to-blue-500" />
+                        <span className="text-xs font-semibold tracking-widest uppercase text-cyan-400">Portfolio</span>
+                        <div className="h-px w-8 bg-gradient-to-l from-blue-500 to-cyan-400" />
+                    </div>
+                    <h2 className="text-4xl md:text-5xl font-display font-bold text-white mb-4">
+                        Selected <span className="text-gradient">Works</span>
                     </h2>
-                </div>
+                    <p className="text-slate-400 max-w-xl mx-auto">
+                        Solving real problems, not just writing logic. Here's what I've built.
+                    </p>
+                </motion.div>
 
                 {loading ? (
-                    <div className="flex flex-col items-center justify-center py-20">
-                        <Loader2 className="w-12 h-12 text-brand-500 animate-spin mb-4" />
-                        <p className="text-brand-800/60 font-medium animate-pulse">Fetching projects from API...</p>
+                    <div className="flex items-center justify-center py-24">
+                        <Loader2 className="w-8 h-8 text-blue-400 animate-spin" />
                     </div>
                 ) : (
-                    <div className="space-y-32">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {projects.map((project, index) => (
                             <motion.div
                                 key={project.id}
-                                initial={{ opacity: 0, y: 50 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true, margin: "-100px" }}
-                                transition={{ duration: 0.8, ease: "easeOut" }}
-                                className={`flex flex-col ${index % 2 === 1 ? 'lg:flex-row-reverse' : 'lg:flex-row'} items-center gap-12 lg:gap-20`}
+                                initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }} transition={{ duration: 0.6, delay: index * 0.1 }}
+                                className="group glass-card rounded-2xl overflow-hidden border border-white/[0.07] hover:border-blue-500/30 transition-all duration-300"
                             >
-                                {/* Image Side */}
-                                <div className="w-full lg:w-1/2 relative group">
-                                    <div className="absolute inset-0 bg-brand-500/20 translate-x-4 translate-y-4 rounded-[2rem] -z-10 group-hover:translate-x-6 group-hover:translate-y-6 transition-transform duration-500" />
-                                    <div className="overflow-hidden rounded-[2rem] aspect-[4/3] border-4 border-white shadow-xl relative z-10">
-                                        <img
-                                            src={project.image_url || 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1000&auto=format&fit=crop'}
-                                            alt={project.title}
-                                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                                        />
-                                    </div>
-                                </div>
-
-                                {/* Content Side */}
-                                <div className="w-full lg:w-1/2 flex flex-col items-start gap-6">
-                                    <h3 className="text-3xl md:text-4xl font-bold text-brand-900">{project.title}</h3>
-
-                                    <div className="space-y-4 relative pl-6 border-l-2 border-brand-200">
-                                        <div>
-                                            <h4 className="text-sm font-bold text-red-500 uppercase tracking-wide mb-1">The Problem</h4>
-                                            <p className="text-brand-800/80 text-lg leading-relaxed">{project.problem}</p>
-                                        </div>
-                                        <div>
-                                            <h4 className="text-sm font-bold text-emerald-500 uppercase tracking-wide mb-1">The Solution</h4>
-                                            <p className="text-brand-800/80 text-lg leading-relaxed">{project.solution}</p>
-                                        </div>
-                                    </div>
-
-                                    <div className="flex flex-wrap gap-2 mt-2">
-                                        {(project.tags || []).map(tag => (
-                                            <span key={tag} className="px-4 py-1.5 bg-brand-100 text-brand-800 text-sm font-medium rounded-full">
-                                                {tag}
-                                            </span>
-                                        ))}
-                                    </div>
-
-                                    <div className="flex gap-4 mt-4">
+                                {/* Image */}
+                                <div className="relative overflow-hidden aspect-video">
+                                    <img
+                                        src={project.image_url || 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1000&auto=format&fit=crop'}
+                                        alt={project.title}
+                                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-navy-900/90 via-navy-900/20 to-transparent" />
+                                    <div className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300">
                                         {project.live_url && (
-                                            <a href={project.live_url} target="_blank" rel="noreferrer" className="flex items-center gap-2 px-6 py-3 bg-brand-900 text-white rounded-full hover:bg-brand-800 transition-colors font-medium">
-                                                View Live <ExternalLink className="w-4 h-4" />
+                                            <a href={project.live_url} target="_blank" rel="noreferrer"
+                                                className="w-9 h-9 rounded-full glass-card flex items-center justify-center text-white hover:bg-blue-500/40 transition-colors">
+                                                <ExternalLink className="w-4 h-4" />
                                             </a>
                                         )}
                                         {project.github_url && (
-                                            <a href={project.github_url} target="_blank" rel="noreferrer" className="flex items-center gap-2 px-6 py-3 border border-brand-200 bg-white text-brand-900 rounded-full hover:bg-brand-50 transition-colors font-medium">
-                                                Code <Github className="w-4 h-4" />
+                                            <a href={project.github_url} target="_blank" rel="noreferrer"
+                                                className="w-9 h-9 rounded-full glass-card flex items-center justify-center text-white hover:bg-white/20 transition-colors">
+                                                <Github className="w-4 h-4" />
                                             </a>
                                         )}
+                                    </div>
+                                </div>
+
+                                {/* Content */}
+                                <div className="p-6">
+                                    <div className="flex items-start justify-between mb-3">
+                                        <h3 className="text-xl font-display font-bold text-white group-hover:text-blue-400 transition-colors">
+                                            {project.title}
+                                        </h3>
+                                        {project.live_url && (
+                                            <a href={project.live_url} target="_blank" rel="noreferrer"
+                                                className="ml-2 shrink-0 text-slate-600 group-hover:text-blue-400 transition-colors">
+                                                <ArrowUpRight className="w-5 h-5" />
+                                            </a>
+                                        )}
+                                    </div>
+                                    <p className="text-slate-400 text-sm leading-relaxed mb-4 line-clamp-2">
+                                        {project.solution || project.problem}
+                                    </p>
+                                    <div className="flex flex-wrap gap-2">
+                                        {(project.tags || []).map(tag => (
+                                            <span key={tag} className="px-2.5 py-0.5 text-xs font-medium rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20">
+                                                {tag}
+                                            </span>
+                                        ))}
                                     </div>
                                 </div>
                             </motion.div>

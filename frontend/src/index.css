@@ -1,77 +1,92 @@
-@tailwind base;
+﻿@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
     :root {
-        --bg-base: #fafafa;
-        --text-base: #1b1b1f;
+        --navy-950: #03050d;
+        --navy-900: #060918;
+        --primary: #3b82f6;
+        --cyan: #06b6d4;
+        --purple: #8b5cf6;
     }
 
-    html {
-        scroll-behavior: smooth;
-    }
+    html { scroll-behavior: smooth; }
 
     body {
-        background-color: var(--bg-base);
-        color: var(--text-base);
-        font-family: 'Outfit', sans-serif;
+        background-color: #060918;
+        color: #f1f5f9;
+        font-family: 'Inter', sans-serif;
+        font-weight: 400;
         overflow-x: hidden;
     }
 
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-        font-family: 'Syne', sans-serif;
+    h1, h2, h3, h4, h5, h6 {
+        font-family: 'Manrope', sans-serif;
         letter-spacing: -0.02em;
     }
 
-    /* Custom Selection */
     ::selection {
-        background: #a3a5ee;
-        color: #1b1b1f;
+        background: rgba(59, 130, 246, 0.45);
+        color: #fff;
     }
 
-    /* Custom Scrollbar */
-    ::-webkit-scrollbar {
-        width: 8px;
-    }
-
-    ::-webkit-scrollbar-track {
-        background: var(--bg-base);
-    }
-
-    ::-webkit-scrollbar-thumb {
-        background: #d2bab0;
-        border-radius: 4px;
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-        background: #a3a5ee;
-    }
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: #03050d; }
+    ::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #60a5fa; }
 }
 
 @layer utilities {
-    .text-balance {
-        text-wrap: balance;
+    .text-gradient {
+        background: linear-gradient(135deg, #06b6d4, #3b82f6, #8b5cf6);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
     }
 
-    /* Soft Glassmorphism */
-    .glass-panel {
-        background: rgba(255, 255, 255, 0.7);
+    .text-gradient-blue {
+        background: linear-gradient(135deg, #38bdf8, #818cf8);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .glass-card {
+        background: rgba(255, 255, 255, 0.04);
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.4);
+        border: 1px solid rgba(255, 255, 255, 0.08);
     }
 
-    /* Architectural Grids */
-    .bg-grid-pattern {
-        background-size: 40px 40px;
-        background-image:
-            linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+    .glass-card-hover:hover {
+        background: rgba(255, 255, 255, 0.07);
+        border-color: rgba(59, 130, 246, 0.3) !important;
+    }
+
+    .bg-dot-grid {
+        background-image: radial-gradient(rgba(99, 179, 237, 0.06) 1px, transparent 1px);
+        background-size: 30px 30px;
+    }
+
+    .btn-gradient {
+        background: linear-gradient(135deg, #3b82f6, #06b6d4);
+    }
+
+    .btn-gradient:hover {
+        background: linear-gradient(135deg, #2563eb, #0891b2);
+    }
+
+    .glow-blue {
+        box-shadow: 0 0 80px rgba(59, 130, 246, 0.2), 0 0 30px rgba(59, 130, 246, 0.1);
+    }
+
+    .section-label::before,
+    .section-label::after {
+        content: '';
+        display: block;
+        width: 32px;
+        height: 1px;
+        background: linear-gradient(90deg, #06b6d4, #3b82f6);
     }
 }

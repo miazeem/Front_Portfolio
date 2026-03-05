@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\ProjectController;
+use App\Http\Controllers\Api\SettingController;
 use App\Http\Controllers\Api\TestimonialController;
 use Illuminate\Support\Facades\Route;
 
@@ -16,6 +17,7 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/contact', [ContactController::class, 'store']);
 Route::get('/projects', [ProjectController::class, 'index']);
 Route::get('/testimonials', [TestimonialController::class, 'index']);
+Route::get('/settings', [SettingController::class, 'index']);
 
 /*
 |--------------------------------------------------------------------------
@@ -45,5 +47,8 @@ Route::middleware('auth:sanctum')->group(function () {
         // Contact Messages
         Route::get('/messages', [ContactController::class, 'index']);
         Route::patch('/messages/{contactMessage}/read', [ContactController::class, 'markRead']);
+
+        // Settings
+        Route::put('/settings', [SettingController::class, 'update']);
     });
 });
