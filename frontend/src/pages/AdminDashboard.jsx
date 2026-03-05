@@ -15,17 +15,13 @@ import {
     adminSkillService,
 } from '../services/api';
 
-async function uploadToCloudinary(file, folder = 'uploads') {
-    const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
-    const preset    = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
-    const body = new FormData();
-    body.append('file', file);
-    body.append('upload_preset', preset);
-    body.append('folder', 'portfolio/' + folder);
-    const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, { method: 'POST', body });
-    if (!res.ok) throw new Error('Cloudinary upload failed');
-    const data = await res.json();
-    return data.secure_url;
+function fileToDataUrl(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+    });
 }
 
 /* --- Reusable Modal ---------------------------- */
@@ -75,7 +71,7 @@ function ImageUploadField({ label, value, onChange, folder }) {
         if (!file) return;
         setUploading(true);
         try {
-            const url = await uploadToCloudinary(file, folder);
+            const url = await fileToDataUrl(file);
             onChange(url);
         } catch (err) {
             console.error('Upload failed', err);
@@ -301,7 +297,7 @@ export default function AdminDashboard() {
         if (!file) return;
         setImageUploading(true);
         try {
-            const url = await uploadToCloudinary(file, 'profile');
+            const url = await fileToDataUrl(file);
             setSettings(s => ({ ...s, profile_image_url: url }));
             await settingsService.update({ ...settings, profile_image_url: url });
         } catch (err) {
