@@ -11,9 +11,16 @@ export default function Home() {
     const [showTop, setShowTop] = useState(false);
 
     useEffect(() => {
-        const onScroll = () => setShowTop(window.scrollY > 200);
+        const onScroll = () => {
+            const scrollY = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop;
+            setShowTop(scrollY > 100);
+        };
         window.addEventListener('scroll', onScroll, { passive: true });
-        return () => window.removeEventListener('scroll', onScroll);
+        document.addEventListener('scroll', onScroll, { passive: true });
+        return () => {
+            window.removeEventListener('scroll', onScroll);
+            document.removeEventListener('scroll', onScroll);
+        };
     }, []);
 
     return (
@@ -43,8 +50,11 @@ export default function Home() {
 
             {/* Scroll to top */}
             <button
-                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                className={`fixed bottom-6 right-6 z-50 w-11 h-11 rounded-full flex items-center justify-center shadow-lg shadow-blue-500/30 transition-all duration-300 hover:scale-110 active:scale-95 ${
+                onClick={() => {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    document.documentElement.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                className={`fixed bottom-6 right-6 z-[9999] w-12 h-12 rounded-full flex items-center justify-center shadow-xl shadow-blue-500/40 transition-all duration-300 hover:scale-110 active:scale-95 ${
                     showTop ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 translate-y-4 pointer-events-none'
                 }`}
                 style={{ background: 'linear-gradient(135deg, #06b6d4, #3b82f6, #8b5cf6)' }}
