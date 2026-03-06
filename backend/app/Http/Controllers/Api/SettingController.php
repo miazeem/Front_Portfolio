@@ -25,7 +25,7 @@ class SettingController extends Controller
             'github_url'       => 'nullable|url|max:255',
             'linkedin_url'     => 'nullable|url|max:255',
             'cv_url'           => 'nullable|url|max:500',
-            'profile_image_url'=> 'nullable|string|max:500',
+            'profile_image_url'=> 'nullable|string|max:2000000',
         ]);
 
         foreach ($data as $key => $value) {
