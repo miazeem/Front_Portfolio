@@ -14,15 +14,7 @@ import {
     settingsService,
     adminSkillService,
 } from '../services/api';
-
-function fileToDataUrl(file) {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
-    });
-}
+import { uploadImage } from '../services/supabase';
 
 /* --- Reusable Modal ---------------------------- */
 function Modal({ title, onClose, children }) {
@@ -71,7 +63,7 @@ function ImageUploadField({ label, value, onChange, folder }) {
         if (!file) return;
         setUploading(true);
         try {
-            const url = await fileToDataUrl(file);
+            const url = await uploadImage(file, folder);
             onChange(url);
         } catch (err) {
             console.error('Upload failed', err);
@@ -297,7 +289,7 @@ export default function AdminDashboard() {
         if (!file) return;
         setImageUploading(true);
         try {
-            const url = await fileToDataUrl(file);
+            const url = await uploadImage(file, 'profile');
             setSettings(s => ({ ...s, profile_image_url: url }));
             await settingsService.update({ ...settings, profile_image_url: url });
         } catch (err) {
