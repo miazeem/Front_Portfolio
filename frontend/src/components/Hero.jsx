@@ -1,6 +1,6 @@
 ﻿import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Github, Linkedin, Mail, ArrowRight, Download } from 'lucide-react';
+import { Github, Linkedin, Mail, ArrowRight, Download, Menu, X } from 'lucide-react';
 import { settingsService, skillService } from '../services/api';
 
 const navLinks = ['About', 'Skills', 'Projects', 'Contact'];
@@ -14,6 +14,7 @@ const stats = [
 export default function Hero() {
     const [settings, setSettings] = useState({ github_url: '', linkedin_url: '', cv_url: '', profile_image_url: '' });
     const [techStack, setTechStack] = useState([]);
+    const [mobileOpen, setMobileOpen] = useState(false);
 
     useEffect(() => {
         settingsService.getAll()
@@ -61,15 +62,48 @@ export default function Hero() {
                     </nav>
                     <div className="flex items-center gap-3">
                         <a href={settings.github_url || '#'} target="_blank" rel="noreferrer"
-                            className="w-9 h-9 rounded-full glass-card flex items-center justify-center text-slate-400 hover:text-white transition-all">
+                            className="hidden sm:flex w-9 h-9 rounded-full glass-card items-center justify-center text-slate-400 hover:text-white transition-all">
                             <Github className="w-4 h-4" />
                         </a>
                         <a href="#contact"
-                            className="px-5 py-2 btn-gradient text-white text-sm font-semibold rounded-full shadow-lg shadow-blue-500/25">
+                            className="hidden sm:inline-flex px-5 py-2 btn-gradient text-white text-sm font-semibold rounded-full shadow-lg shadow-blue-500/25">
                             Hire Me
                         </a>
+                        <button
+                            className="md:hidden flex items-center justify-center w-9 h-9 rounded-full glass-card text-slate-400 hover:text-white transition-all"
+                            onClick={() => setMobileOpen(o => !o)}
+                            aria-label="Toggle menu"
+                        >
+                            {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+                        </button>
                     </div>
                 </div>
+                {/* Mobile menu */}
+                {mobileOpen && (
+                    <motion.div
+                        initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.2 }}
+                        className="md:hidden border-t border-white/[0.06] bg-navy-900/95 backdrop-blur-xl px-6 py-4 flex flex-col gap-4"
+                    >
+                        {navLinks.map(link => (
+                            <a key={link} href={`#${link.toLowerCase()}`}
+                                onClick={() => setMobileOpen(false)}
+                                className="text-sm text-slate-300 hover:text-white transition-colors font-medium py-1">
+                                {link}
+                            </a>
+                        ))}
+                        <div className="flex items-center gap-3 pt-2 border-t border-white/[0.06]">
+                            <a href={settings.github_url || '#'} target="_blank" rel="noreferrer"
+                                className="w-9 h-9 rounded-full glass-card flex items-center justify-center text-slate-400 hover:text-white transition-all">
+                                <Github className="w-4 h-4" />
+                            </a>
+                            <a href="#contact" onClick={() => setMobileOpen(false)}
+                                className="px-5 py-2 btn-gradient text-white text-sm font-semibold rounded-full shadow-lg shadow-blue-500/25">
+                                Hire Me
+                            </a>
+                        </div>
+                    </motion.div>
+                )}
             </header>
 
             {/* Hero Content */}
@@ -171,7 +205,7 @@ export default function Hero() {
                     <motion.div
                         initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.9, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                        className="hidden lg:flex flex-col items-center gap-6"
+                        className="flex flex-col items-center gap-6"
                     >
                         {/* Photo frame */}
                         <div className="relative">
@@ -190,7 +224,7 @@ export default function Hero() {
                             <div className="absolute -bottom-2 -right-2 w-5 h-5 border-b-2 border-r-2 border-cyan-400 rounded-br-lg" />
 
                             {/* Photo */}
-                            <div className="relative w-[320px] h-[380px] rounded-3xl overflow-hidden">
+                            <div className="relative w-[240px] h-[280px] sm:w-[280px] sm:h-[330px] lg:w-[320px] lg:h-[380px] rounded-3xl overflow-hidden">
                                 <img
                                     src={settings.profile_image_url || '/profile.jpg'}
                                     alt="Azeem Ahamed"
